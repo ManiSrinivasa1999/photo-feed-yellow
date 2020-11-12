@@ -8,7 +8,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
-import CarasouelImage from './components/CarasouelImage';
 
 // Style
 const GlobalStyle = createGlobalStyle`
@@ -75,7 +74,6 @@ function App() {
         </WrapperImages>
       </InfiniteScroll>
       {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />}
-      {selectedImg && <CarasouelImage selectedImg={selectedImg} setSelectedImg={setSelectedImg} />}
     </div>
   );
 }
