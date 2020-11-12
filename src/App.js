@@ -35,7 +35,6 @@ const WrapImage = styled.section`
 function App() {
   const [images, setImage] = useState([]);
   const [selectedImg, setSelectedImg] = useState(null);
-  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     fetchImages();
@@ -56,6 +55,11 @@ function App() {
     if (e.target.classList.contains('backdrop')) {
       setSelectedImg(null);
     }
+  };
+
+  let newIndex = 0;
+  const setSelectedIndex = (index) => (e) => {
+    newIndex += index;
   };
 
   return (
@@ -91,13 +95,9 @@ function App() {
           <Row>
             <Col>
               <Button
-                className='button-image'
+                className='button-image-left'
                 onClick={() => {
-                  if (selectedIndex > 1) {
-                    setSelectedImg(
-                      images[setSelectedIndex(selectedIndex - 1)].urls.thumb
-                    );
-                  }
+                  setSelectedImg(images[newIndex].urls.thumb);
                 }}
               >{`<`}</Button>
             </Col>
@@ -106,10 +106,10 @@ function App() {
             </Col>
             <Col>
               <Button
+                className='button-image-right'
                 onClick={() => {
-                  setSelectedImg(
-                    images[setSelectedIndex(selectedIndex + 1)].urls.thumb
-                  );
+                  setSelectedImg(images[newIndex + 1].urls.thumb);
+                  setSelectedIndex(newIndex + 1);
                 }}
               >{`>`}</Button>
             </Col>
