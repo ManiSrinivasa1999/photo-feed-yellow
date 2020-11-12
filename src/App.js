@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Heading } from './components/Heading';
-import { UnsplashImage } from './components/UnsplashImage';
-import { Loader } from './components/Loader';
+import { Image } from './components/Image';
+import { Loading } from './components/Loading';
 import Modal from './components/Modal';
 import axios from 'axios';
+import './App.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const WrapperImages = styled.section`
+const WrapImage = styled.section`
   max-width: 70rem;
   margin: 4rem auto;
   display: grid;
@@ -44,7 +44,9 @@ function App() {
     // const accessKey = process.env.REACT_APP_ACCESSKEY;
 
     axios
-      .get(`${apiRoot}/photos/random?client_id=ribDIB12qExVwBVZXk392PWEqRlkGdKTwenGefJ91o4&count=${count}`)
+      .get(
+        `${apiRoot}/photos/random?client_id=ribDIB12qExVwBVZXk392PWEqRlkGdKTwenGefJ91o4&count=${count}`
+      )
       .then((res) => {
         setImage([...images, ...res.data]);
       });
@@ -52,28 +54,32 @@ function App() {
 
   return (
     <div className='App'>
-      <Heading />
+      <header className='App-header'>
+        <h1>Photo Feed</h1>
+      </header>
       <GlobalStyle />
       <InfiniteScroll
         dataLength={images.length}
         next={fetchImages}
         hasMore={true}
-        loader={<Loader />}
+        loader={<Loading />}
       >
-        <WrapperImages>
+        <WrapImage>
           {images.map((image) => (
             <motion.div
               onClick={() => setSelectedImg(image.urls.thumb)}
-              whileHover={{opacity: 1}}
+              whileHover={{ opacity: 1 }}
               className='img-wrap'
               layout
             >
-              <UnsplashImage url={image.urls.thumb} key={image.id} />
+              <Image url={image.urls.thumb} key={image.id} />
             </motion.div>
           ))}
-        </WrapperImages>
+        </WrapImage>
       </InfiniteScroll>
-      {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />}
+      {selectedImg && (
+        <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />
+      )}
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-export const UnsplashImage = ({ url, key }) => {
+export const Image = ({ url, key }) => {
   return (
     <>
       <motion.img
