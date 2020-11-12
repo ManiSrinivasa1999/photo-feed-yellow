@@ -5,7 +5,7 @@ import { Loader } from './components/Loader';
 import Modal from './components/Modal';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
 
@@ -62,9 +62,14 @@ function App() {
       >
         <WrapperImages>
           {images.map((image) => (
-            <div onClick={() => setSelectedImg(image.urls.thumb)}>
+            <motion.div
+              onClick={() => setSelectedImg(image.urls.thumb)}
+              whileHover={{opacity: 1}}
+              className='img-wrap'
+              layout
+            >
               <UnsplashImage url={image.urls.thumb} key={image.id} />
-            </div>
+            </motion.div>
           ))}
         </WrapperImages>
       </InfiniteScroll>

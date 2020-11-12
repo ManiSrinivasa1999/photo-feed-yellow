@@ -1,16 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-
-const Img = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-`;
+import { motion } from 'framer-motion';
 
 export const UnsplashImage = ({ url, key }) => {
   return (
     <>
-      <Img key={key} src={url} alt="" />
+      <motion.img
+        className='image-fit'
+        key={key}
+        src={url}
+        alt=''
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+      />
     </>
-  )
-}
+  );
+};
