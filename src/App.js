@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heading } from './components/Heading';
 import { UnsplashImage } from './components/UnsplashImage';
 import { Loader } from './components/Loader';
-import { Modal, Button } from 'reactstrap';
+import Modal from './components/Modal';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -33,23 +33,22 @@ const WrapperImages = styled.section`
 
 function App() {
   const [images, setImage] = useState([]);
-  
+  const [selectedImg, setSelectedImg] = useState(null);
 
   useEffect(() => {
     fetchImages();
-  }, [])
+  }, []);
 
   const fetchImages = (count = 10) => {
-    const apiRoot = "https://api.unsplash.com";
+    const apiRoot = 'https://api.unsplash.com';
     const accessKey = process.env.REACT_APP_ACCESSKEY;
 
     axios
       .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
-      .then(res => {
+      .then((res) => {
         setImage([...images, ...res.data]);
-      })
-  }
-
+      });
+  };
 
   return (
     <div className='App'>
@@ -62,11 +61,14 @@ function App() {
         loader={<Loader />}
       >
         <WrapperImages>
-          {images.map(image => (
-            <UnsplashImage url={image.urls.thumb} key={image.id} />
+          {images.map((image) => (
+            <div onClick={() => setSelectedImg(image.urls.thumb)}>
+              <UnsplashImage url={image.urls.thumb} key={image.id} />
+            </div>
           ))}
         </WrapperImages>
       </InfiniteScroll>
+      {selectedImg && <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />}
     </div>
   );
 }
