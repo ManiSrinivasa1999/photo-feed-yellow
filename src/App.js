@@ -8,6 +8,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components';
+import { Row, Col, Button } from 'reactstrap';
 
 // Style
 const GlobalStyle = createGlobalStyle`
@@ -23,10 +24,10 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const WrapImage = styled.section`
-  max-width: 70rem;
+  max-width: 80rem;
   margin: 4rem auto;
   display: grid;
-  grid-gap: 1em;
+  grid-gap: 1.5em;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   grid-auto-rows: 300px;
 `;
@@ -34,6 +35,7 @@ const WrapImage = styled.section`
 function App() {
   const [images, setImage] = useState([]);
   const [selectedImg, setSelectedImg] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     fetchImages();
@@ -44,12 +46,16 @@ function App() {
     const accessKey = process.env.REACT_APP_ACCESSKEY;
 
     axios
-      .get(
-        `${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`
-      )
+      .get(`${apiRoot}/photos/random?client_id=${accessKey}&count=${count}`)
       .then((res) => {
         setImage([...images, ...res.data]);
       });
+  };
+
+  const handleClick = (e) => {
+    if (e.target.classList.contains('backdrop')) {
+      setSelectedImg(null);
+    }
   };
 
   return (
@@ -65,20 +71,50 @@ function App() {
         loader={<Loading />}
       >
         <WrapImage>
-          {images.map((image) => (
+          {images.map((image, index) => (
             <motion.div
-              onClick={() => setSelectedImg(image.urls.thumb)}
+              onClick={() => {
+                setSelectedImg(image.urls.thumb);
+                setSelectedIndex(index);
+              }}
               whileHover={{ opacity: 1 }}
               className='img-wrap'
               layout
             >
-              <Image url={image.urls.thumb} key={image.id} />
+              <Image url={image.urls.thumb} key={index} />
             </motion.div>
           ))}
         </WrapImage>
       </InfiniteScroll>
       {selectedImg && (
-        <Modal selectedImg={selectedImg} setSelectedImg={setSelectedImg} />
+        <div onClick={handleClick}>
+          <Row>
+            <Col>
+              <Button
+                className='button-image'
+                onClick={() => {
+                  if (selectedIndex > 1) {
+                    setSelectedImg(
+                      images[setSelectedIndex(selectedIndex - 1)].urls.thumb
+                    );
+                  }
+                }}
+              >{`<`}</Button>
+            </Col>
+            <Col>
+              <Modal selectedImg={selectedImg} />
+            </Col>
+            <Col>
+              <Button
+                onClick={() => {
+                  setSelectedImg(
+                    images[setSelectedIndex(selectedIndex + 1)].urls.thumb
+                  );
+                }}
+              >{`>`}</Button>
+            </Col>
+          </Row>
+        </div>
       )}
     </div>
   );

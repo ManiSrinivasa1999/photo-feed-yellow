@@ -1,13 +1,8 @@
 import React from 'react';
 
-const Modal = ({ selectedImg, setSelectedImg }) => {
-  const handleClick = (e) => {
-    if (e.target.classList.contains('backdrop')) {
-      setSelectedImg(null);
-    }
-  };
+const Modal = ({ selectedImg }) => {
   return (
-    <div className='backdrop' onClick={handleClick}>
+    <div className='backdrop'>
       <img src={selectedImg} alt='EnlargedImage' />
     </div>
   );
