@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Heading } from './components/Heading';
 import { UnsplashImage } from './components/UnsplashImage';
 import { Loader } from './components/Loader';
+import { Modal, Button } from 'reactstrap';
 import axios from 'axios';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
@@ -32,6 +33,7 @@ const WrapperImages = styled.section`
 
 function App() {
   const [images, setImage] = useState([]);
+  
 
   useEffect(() => {
     fetchImages();
