@@ -35,6 +35,7 @@ const WrapImage = styled.section`
 function App() {
   const [images, setImage] = useState([]);
   const [selectedImg, setSelectedImg] = useState(null);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     fetchImages();
@@ -57,10 +58,10 @@ function App() {
     }
   };
 
-  let newIndex = 0;
-  const setSelectedIndex = (index) => (e) => {
-    newIndex += index;
-  };
+  // let newIndex = 0;
+  // const setSelectedIndex = (index) => (e) => {
+  //   newIndex += index;
+  // };
 
   return (
     <div className='App'>
@@ -85,7 +86,7 @@ function App() {
               className='img-wrap'
               layout
             >
-              <Image url={image.urls.thumb} key={index} />
+              <Image url={image.urls.thumb} key={index} className='photo' />
             </motion.div>
           ))}
         </WrapImage>
@@ -97,7 +98,8 @@ function App() {
               <Button
                 className='button-image-left'
                 onClick={() => {
-                  setSelectedImg(images[newIndex].urls.thumb);
+                  setSelectedImg(images[selectedIndex - 1].urls.thumb);
+                  setSelectedIndex(selectedIndex - 1);
                 }}
               >{`<`}</Button>
             </Col>
@@ -108,8 +110,8 @@ function App() {
               <Button
                 className='button-image-right'
                 onClick={() => {
-                  setSelectedImg(images[newIndex + 1].urls.thumb);
-                  setSelectedIndex(newIndex + 1);
+                  setSelectedImg(images[selectedIndex + 1].urls.thumb);
+                  setSelectedIndex(selectedIndex + 1);
                 }}
               >{`>`}</Button>
             </Col>
