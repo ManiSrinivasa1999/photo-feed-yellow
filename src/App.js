@@ -98,8 +98,10 @@ function App() {
               <Button
                 className='button-image-left'
                 onClick={() => {
-                  setSelectedImg(images[selectedIndex - 1].urls.thumb);
-                  setSelectedIndex(selectedIndex - 1);
+                  if (selectedIndex > 0) {
+                    setSelectedImg(images[selectedIndex - 1].urls.thumb);
+                    setSelectedIndex(selectedIndex - 1);
+                  }
                 }}
               >{`<`}</Button>
             </Col>
